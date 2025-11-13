@@ -1,14 +1,22 @@
 package com.painthu.dynamictable.Service;
 
 import com.painthu.dynamictable.Model.HallAllocation;
+import com.painthu.dynamictable.Model.TimeSlot;
 import com.painthu.dynamictable.Repository.BatchRepository;
 import com.painthu.dynamictable.Repository.HallAllocationRepository;
 import com.painthu.dynamictable.Repository.HallRepository;
 import com.painthu.dynamictable.Repository.StaffRepository;
+import com.painthu.dynamictable.Utils.HallUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.painthu.dynamictable.Utils.HallUtil.setDaySlots;
 
 @Service
 @RequiredArgsConstructor
@@ -33,10 +41,56 @@ public class HallAllocationService {
 
     private boolean isValidated() {
 
+        //if (HallUtil.isSlotExist(hall))
+
         return true;
 
     }
 
+    public HallAllocation saveHallAllocation(HallAllocation allocation, String batchId) {
+
+        // Load existing hall allocation or create a new one
+        HallAllocation hall = hallAllocationRepository.findById(allocation.getHallId())
+                .orElseGet(() -> {
+                    HallAllocation newHall = new HallAllocation();
+                    newHall.setHallId(allocation.getHallId());
+                    return newHall;
+                });
+
+        // Add slots day by day
+        addSlots(hall, "monday", allocation.getMonday());
+        addSlots(hall, "tuesday", allocation.getTuesday());
+        addSlots(hall, "wednesday", allocation.getWednesday());
+        addSlots(hall, "thursday", allocation.getThursday());
+        addSlots(hall, "friday", allocation.getFriday());
+        addSlots(hall, "saturday", allocation.getSaturday());
+        addSlots(hall, "sunday", allocation.getSunday());
+
+        // Save updated hall allocation
+        return hallAllocationRepository.save(hall);
+    }
+
+    private void addSlots(HallAllocation hall, String day, List<TimeSlot> newSlots) {
+        if (newSlots == null || newSlots.isEmpty()) return;
+
+        List<TimeSlot> existing = HallUtil.getDaySlots(hall, day);
+        if (existing == null) existing = new ArrayList<>();
+
+        for (TimeSlot slot : newSlots) {
+            // Find first available slots instead of just incrementing
+            int count = slot.getSlotId().length;
+            int[] available = HallUtil.findAvailableSlots(hall, day, count);
+            slot.setSlotId(available);
+
+            existing.add(slot);
+        }
+
+        setDaySlots(hall, day, existing);
+    }
+
+
+
+    /*
     public HallAllocation saveHallAllocation(HallAllocation allocation, String batcId) {
         return hallAllocationRepository.findById(allocation.getHallId())
                 .map(existing -> {
@@ -79,6 +133,8 @@ public class HallAllocationService {
                 .orElseGet(() -> hallAllocationRepository.save(allocation));
     }
 
+
+     */
 
 
     /*
