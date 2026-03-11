@@ -1,0 +1,19 @@
+To Be Done
+
+==> Weekday slots Restricted
+==> Weekend upto 13 sots
+==> Slot Id automatically increased within the day
+==> NumSlots added in subject model
+==> Auto add slots(Sending numOf Slots instead of giving lot ids)
+
+
+To Be Done
+
+==> When allocationg, Need to create timetable for particular staff and for the batch also
+==> When assigning, make sure the staff is avaiable
+==> Automate allocation without giving all detail. Batch details is enough
+==> If a module has practical, Need to asign PIC, not LIC
+==> when assigning practicals, make sure they hdont have lectures in the same time slot within the same day
+==> Alocate practicals in labs only
+==> Move to the next day if the slot is full
+==> Check Staff Constraints

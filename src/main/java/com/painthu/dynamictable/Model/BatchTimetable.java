@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document(collection = "staff_timetable")
-public class StaffTimetable {
+@Document(collection = "batch_timetable")
+public class BatchTimetable {
 
     @Id
-    private String staffId;
+    private String batchId;
 
     private List<int[]> monday = new ArrayList<>();
     private List<int[]> tuesday = new ArrayList<>();
