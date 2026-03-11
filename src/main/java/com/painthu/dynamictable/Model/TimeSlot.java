@@ -14,7 +14,10 @@ public class TimeSlot {
     private int[] slotId;
     private int numOfSlots;
     private String subject;
-    private String[] staffs;
+    private List<String> staffs;
     private List<String> batches;
     private boolean isOccupied;
 }
+
+
+

@@ -2,48 +2,33 @@ package com.painthu.dynamictable.Service;
 
 import com.painthu.dynamictable.Model.Subject;
 import com.painthu.dynamictable.Repository.SubjectRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SubjectService {
 
-    private final SubjectRepository repository;
+    private final SubjectRepository subjectRepository;
 
-    public SubjectService(SubjectRepository repository) {
-        this.repository = repository;
+    // Save a new subject (e.g., dsv with 2 slots)
+    public Subject addSubject(Subject subject) {
+        return subjectRepository.save(subject);
     }
 
-    public  Subject createSubject(Subject subject){
-        return repository.save(subject);
+    // This is the "Engine Room" method for your automation
+    // It finds all subjects that need to be scheduled for B02
+    public List<Subject> getSubjectsByBatch(String batchId) {
+        return subjectRepository.findByBatchCode(batchId);
     }
 
-    public List<Subject> getAllSubjects(){
-        return repository.findAll();
+    public List<Subject> getAllSubjects() {
+        return subjectRepository.findAll();
     }
 
-    public Subject updateStaff(String id, Subject module){
-        return repository.findById(id)
-                .map(subject -> {
-                    subject.setName(module.getName());
-                    subject.setProgramCode(module.getProgramCode());
-                    subject.setBatchCode(module.getBatchCode());
-                    subject.setHasCommonBatches(module.getHasCommonBatches());
-                    subject.setCommonBatches(module.getCommonBatches());
-                    subject.setHasPractical(module.isHasPractical());
-                    subject.setLectureDuration(module.getLectureDuration());
-                    subject.setLectureInCharge(module.getLectureInCharge());
-                    subject.setLectureDuration(module.getLectureDuration());
-                    subject.setTutorialDuration(module.getTutorialDuration());
-                    subject.setPracticalDuration(module.getPracticalDuration());
-
-                    return repository.save(subject);
-                })
-                .orElse(null);
-    }
-
-    public void deleteStaff(String id) {
-        repository.deleteById(id);
+    public void deleteSubject(String id) {
+        subjectRepository.deleteById(id);
     }
 }

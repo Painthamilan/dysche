@@ -20,7 +20,6 @@ public class Subject {
     private String programCode;
     private String batchCode;
     private String hasCommonBatches;
-
     private List<String> commonBatches;
     private List<String> lectureInCharge;
     private List<String> practicalInCharge;
