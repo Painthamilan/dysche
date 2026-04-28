@@ -5,7 +5,7 @@ public enum PREFS {
     ALL, // Ready for all scenarios
     OST, // Weekdays + Saturday
     OSN, // Weekdays + Sunday
-    ELF, // Early leave on Friday
+    ELF,  // Early leave on Friday
     LAM, // Late arrival on Monday
     OWK, // Weekdays Only
     ULM, // Usually Leave on Monday
